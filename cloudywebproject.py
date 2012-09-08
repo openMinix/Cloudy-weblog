@@ -21,9 +21,23 @@ class BlogHandler(webapp2.RequestHandler):
         self.response.out.write(blogPage.render())
 
   
-  
+class NewEntryHandler(webapp2.RequestHandler):
+    """Handles the submit page proccesing"""
+
+    def get(self):
+        submitPage = jinja_env.get_template('newentry.html')
+        self.response.out.write(submitPage.render())
+
+    def post(self):
+        
+        title = self.request.get('title')
+        content = self.request.get('content')
+        
+        self.redirect('/blog/')
+
 app = webapp2.WSGIApplication( [('/', MainPageHandler),
                                 ('/blog/?',BlogHandler),
+                                ('/blog/newentry', NewEntryHandler)
                               ]
                               ,
                               debug=True)

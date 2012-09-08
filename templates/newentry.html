@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
+{% extends 'common.html' %}
 
-<head>
-    <title> Cloudy Blog</title>
-</head>
+{% block content %}
 
-<body>
-    <a href='/blog' > Cloudy Blog</a>
-    
 
-    <h2>New post</h2>
+        <h2>New post</h2>
 
         <form method='post'>
             <label>
@@ -24,9 +18,6 @@
           
             <input type='submit'>
         </form>    
- </body>
 
-<html>
-
-
+{% endblock %}
            

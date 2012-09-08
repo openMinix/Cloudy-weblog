@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends 'common.html' %}
 
-<head>
-    <title> Cloudy Blog</title>
-</head>
 
-<body>
-    <a href='/blog' > Cloudy Blog</a>
-    
-    <div id='content'>
-    No content
-    </div>
+{% block content %}    
 
-    <a href='/blog/newpost'>Submit a new post!</a>
-</body>
+<a href='/blog/newentry'>Submit a new post!</a>
 
-<html>
-
+{% endblock %}
