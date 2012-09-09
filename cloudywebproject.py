@@ -31,7 +31,7 @@ class BlogHandler(BaseHandler):
     """Handles the blog page processing"""
 
     def get(self):
-        entries = BlogEntry.all() 
+        entries = BlogEntry.all().order('-date') 
         self.render('blog.html', entries = entries)
 
 

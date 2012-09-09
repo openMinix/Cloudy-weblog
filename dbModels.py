@@ -10,6 +10,7 @@ def blog_key(name = 'default'):
 class BlogEntry(db.Model):
     title = db.StringProperty(required = True)
     content = db.TextProperty(required = True)
+    date = db.DateTimeProperty(auto_now_add = True)
 
     def render(self):
         return render_template('blogentry.html', entry = self )

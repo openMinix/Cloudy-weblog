@@ -1,7 +1,5 @@
 {% extends 'common.html' %}
 
 {% block content %}
-    {{entry.title}}
-    <br>
-    {{entry.content}}
+    {{entry.render() | safe}}
 {% endblock %}    
