@@ -7,29 +7,34 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader('./templates/'),
                                autoescape = True )
 
 
-class MainPageHandler(webapp2.RequestHandler):
+class BaseHandler(webapp2.RequestHandler):
+    """ Base class for handlers"""
+        
+    def render(self, template, **kwargs):
+        page_template = jinja_env.get_template(template)
+        page_template = page_template.render(**kwargs)
+        self.response.out.write(page_template)
+
+
+class MainPageHandler(BaseHandler):
     """ Handles the main page processing"""
 
     def get(self):
-        
-        mainPage = jinja_env.get_template("mainpage.html")
-        self.response.out.write(mainPage.render())
+        self.render('mainpage.html')
 
 
-class BlogHandler(webapp2.RequestHandler):
+class BlogHandler(BaseHandler):
     """Handles the blog page processing"""
 
     def get(self):
-        blogPage = jinja_env.get_template("blog.html")
-        self.response.out.write(blogPage.render())
+        self.render('blog.html')
 
-  
-class NewEntryHandler(webapp2.RequestHandler):
+
+class NewEntryHandler(BaseHandler):
     """Handles the submit page processing"""
 
     def get(self):
-        submitPage = jinja_env.get_template('newentry.html')
-        self.response.out.write(submitPage.render())
+        self.render('newentry.html')
 
     def post(self):
         
@@ -42,10 +47,10 @@ class NewEntryHandler(webapp2.RequestHandler):
             permalink = str( be.key().id() )
             self.redirect('/blog/' + permalink)
         else:
-            self.response.out.write(submitPage.render())
+            self.render('newentry.html')
             
 
-class EntryPageHandler(webapp2.RequestHandler):
+class EntryPageHandler(BaseHandler):
     """Handles the permalink pages processing"""
     
     def get(self, entry_id):
@@ -53,8 +58,7 @@ class EntryPageHandler(webapp2.RequestHandler):
         entry = db.get(key)
 
         if entry:
-            permalingPage =jinja_env.get_template('permalink.html') 
-            self.response.out.write(permalingPage.render(entry = entry))
+            self.render('permalink.html', entry = entry)
         else:
             self.error(404)
 
