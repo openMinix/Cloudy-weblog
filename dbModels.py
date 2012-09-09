@@ -14,4 +14,15 @@ class BlogEntry(db.Model):
 
     def render(self):
         return render_template('blogentry.html', entry = self )
-    
+
+
+def user_key(group = 'default'):
+    return db.Key.from_path('users',group)
+
+class User(db.Model):
+    username = db.StringProperty( required = True )
+    password = db.StringProperty( required = True )
+    email = db.StringProperty()
+
+    def render(self):
+        pass

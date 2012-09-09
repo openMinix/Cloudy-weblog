@@ -68,12 +68,23 @@ class EntryPageHandler(BaseHandler):
             self.error(404)
 
 
+class SignupHandler(BaseHandler):
+    def get(self):
+        self.render('signup.html')
+    
+    def post(self):
+        self.username = self.request.get('username')
+        self.password = self.request.get('password')
+        self.verify = self.request.get('verify')
+        self.email = self.request.get('email')
+        redirect('/signup')
+
 app = webapp2.WSGIApplication( [('/', MainPageHandler),
                                 ('/blog/?',BlogHandler),
                                 ('/blog/newentry/?', NewEntryHandler),
-                                ('/blog/([0-9]+)/?', EntryPageHandler)
-                              ]
-                              ,
+                                ('/blog/([0-9]+)/?', EntryPageHandler),
+                                ('/signup', SignupHandler)
+                              ],
                               debug=True)
 
 
