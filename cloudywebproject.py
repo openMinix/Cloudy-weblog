@@ -1,8 +1,12 @@
 import webapp2
 import jinja2
+
 from dbModels import BlogEntry 
 from dbModels import blog_key
+from common_utils import render_template
+
 from google.appengine.ext import db
+
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader('./templates/'),
                                autoescape = True )
 
@@ -27,7 +31,8 @@ class BlogHandler(BaseHandler):
     """Handles the blog page processing"""
 
     def get(self):
-        self.render('blog.html')
+        entries = BlogEntry.all() 
+        self.render('blog.html', entries = entries)
 
 
 class NewEntryHandler(BaseHandler):
