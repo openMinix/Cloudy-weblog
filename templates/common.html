@@ -9,6 +9,16 @@
     <body>
         <a href="/blog">Cloudy Blog</a>
 
+        <div class='login'>
+            {% if user %}
+                {{user.username}} <a href='/logout'>logout</a>
+            {% else %}
+                <a href='/login'>login</a> 
+
+                <a href='/signup'>signup</a>
+            {% endif %}
+        </div>
+
         <div id="content">
         {% block content %}
         {% endblock %}

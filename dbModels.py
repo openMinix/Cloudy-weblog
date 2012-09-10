@@ -26,8 +26,8 @@ class User(db.Model):
 
     @classmethod
     def get_by_name(cls, username):
-        return cls.all().filter('username = ', name).get()
-
+        return cls.all().filter('username = ', username).get()
+    
     @classmethod
     def register(cls, username, password, email = None):
         return User( parent = user_key(), username = username,
