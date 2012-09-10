@@ -24,5 +24,21 @@ class User(db.Model):
     password = db.StringProperty( required = True )
     email = db.StringProperty()
 
+    @classmethod
+    def get_by_name(cls, username):
+        return cls.all().filter('username = ', name).get()
+
+    @classmethod
+    def register(cls, username, password, email = None):
+        return User( parent = user_key(), username = username,
+                    password = password, email = email)
+
+    @classmethod
+    def login (cls, username, password):
+        user = cls.get_by_name(username)
+        
+        if user and (user.password == password):
+            return user
+
     def render(self):
         pass

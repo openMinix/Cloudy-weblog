@@ -1,8 +1,7 @@
 import webapp2
 import jinja2
 
-from dbModels import BlogEntry 
-from dbModels import blog_key
+from dbModels import * 
 from common_utils import render_template
 
 from google.appengine.ext import db
@@ -77,7 +76,12 @@ class SignupHandler(BaseHandler):
         self.password = self.request.get('password')
         self.verify = self.request.get('verify')
         self.email = self.request.get('email')
-        redirect('/signup')
+
+        user = User.register(self.username, self.password, self.email)
+        user.put()
+
+        self.redirect('/blog')
+
 
 app = webapp2.WSGIApplication( [('/', MainPageHandler),
                                 ('/blog/?',BlogHandler),
