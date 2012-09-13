@@ -120,7 +120,7 @@ class LoginHandler(BaseHandler):
     """Handles the login page processing"""
 
     def get(self):
-        pass
+        self.render('login.html')
 
     def post(self):
         pass
