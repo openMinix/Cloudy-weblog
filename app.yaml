@@ -6,6 +6,9 @@ threadsafe: true
 
 handlers:
 
+- url: /stylesheets
+  static_dir: stylesheets
+
 - url: /.*
   script: cloudywebproject.app
 
