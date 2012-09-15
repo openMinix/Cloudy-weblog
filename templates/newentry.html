@@ -1,12 +1,12 @@
 {% extends 'common.html' %}
 
-{% block content %}
 
+{% block content %}
 
         <h2>New post</h2>
 
         <form method='post'>
-            <label>
+            <label class='label label-info'>
                 <div>title</div>
                 <input type='text' name='title' value='{{title}}'>
             </label>
@@ -16,7 +16,7 @@
                 <textarea name='content'>{{content}}</textarea>
             </label>
           
-            <input type='submit'>
+            <button class="btn btn-primary" type='submit'>Submit</button>
         </form>    
 
 {% endblock %}

@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<a href='/blog/newentry'>Submit a new post!</a>
+<a class='btn btn-primary' href='/blog/newentry'>Submit a new post!</a>
 
     {% for entry in entries %}
         {{ entry.render() | safe }}

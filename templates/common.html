@@ -4,19 +4,22 @@
     <head>
 
         <title>Cloudy Blog</title>
+        {% block stylesheet %}
         <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
+        {% endblock %}
+
     </head>
 
     <body>
-        <a href="/blog">Cloudy Blog</a>
+        <a class="btn btn-large offset6" href="/blog">Cloudy Blog</a>
 
         <div class='login'>
             {% if user %}
                 {{user.username}} <a href='/logout'>logout</a>
             {% else %}
-                <a href='/login'>login</a> 
+                <a class="btn btn btn-primary pull-right" href='/login'>login</a> 
 
-                <a href='/signup'>signup</a>
+                <a class="btn btn-info pull-right" href='/signup'>signup</a>
             {% endif %}
         </div>
 
