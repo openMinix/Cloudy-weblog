@@ -1,19 +1,18 @@
-{% extends 'common.html' %}
-
+{% extends "common.html" %}
 
 {% block content %}
 
         <h2>New post</h2>
 
-        <form method='post'>
-            <label class='label label-info'>
+        <form method="post">
+            <label class="label label-info">
                 <div>title</div>
-                <input type='text' name='title' value='{{title}}'>
+                <input type="text" name="title" value="{{title}}">
             </label>
         
-            <label>
+            <label class="label label-info">
                 <div>entry</div>
-                <textarea name='content'>{{content}}</textarea>
+                <textarea rows="10" class="span8" name='content'>{{content}}</textarea>
             </label>
           
             <button class="btn btn-primary" type='submit'>Submit</button>

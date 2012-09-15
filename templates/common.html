@@ -4,8 +4,9 @@
     <head>
 
         <title>Cloudy Blog</title>
+
         {% block stylesheet %}
-        <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" />
         {% endblock %}
 
     </head>
@@ -15,7 +16,11 @@
 
         <div class='login'>
             {% if user %}
-                {{user.username}} <a href='/logout'>logout</a>
+                <label class="label label-success pull-right"> 
+                Welcome {{user.username}} !
+                </label>
+                <a class="btn btn btn-primary pull-right" href='/logout'>logout</a>
+               
             {% else %}
                 <a class="btn btn btn-primary pull-right" href='/login'>login</a> 
 

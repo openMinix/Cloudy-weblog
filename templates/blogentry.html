@@ -1,12 +1,16 @@
 <div class='blog-entry'>
-    <div class'entry-title'>
+    <div class'title'>
+        <h2 style="text-align: center">
         {{entry.title}}
+        </h2>
     </div>
 
-    <div class='entry-content'>    
+    <div class="container">    
+        <pre class="prettyprint">
         {{entry.content}}
+        </pre>
     </div>
-    <div class='entry-date'>
+    <div class='label label-info offset10'>
         Added at: {{entry.date}}
     </div>
 </div>    
