@@ -7,14 +7,17 @@
 
         {% block stylesheet %}
         <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" />
+        <link sizes=" rel="icon" type="image/png" href="/stylesheets/cloud.png"/>
         {% endblock %}
 
     </head>
 
     <body>
-        <a class="btn btn-large offset6" href="/blog">Cloudy Blog</a>
+        <div class="hero-unit">
 
-        <div class='login'>
+        <h1 class="offset5" href="/blog">Cloudy Blog</h1>
+
+        <div class="login">
             {% if user %}
                 <label class="label label-success pull-right"> 
                 Welcome {{user.username}} !
@@ -26,6 +29,7 @@
 
                 <a class="btn btn-info pull-right" href='/signup'>signup</a>
             {% endif %}
+        </div>
         </div>
 
         <div id="content">
