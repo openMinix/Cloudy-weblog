@@ -12,17 +12,42 @@
         <form method="post">
         <fieldset>
             <legend>Your data</legend>
-                <label for='username' class='label label-info'>Username</label>
-                <input type='text' id='username' name='username'>
+
+                <div class="control-group warning">
+                <label for="username" class="label label-info">Username</label>
+                <div class="controls">
+                <input type="text" id="username" name="username">
+                <span class="help-inline">{{ invalid_username }}</span>
+                </div>
+                </div>
+                   
                 <br>
-                <label for='password' class='label label-info'>Password</label>
-                <input type='password' id='password'  name='password'>
+                <div class="control-group error">
+                <label for="password" class="label label-info">Password</label>
+                <div class="controls">
+                <input type="password" id="password"  name="password">
+                <span class="help-inline">{{ invalid_password }}</span>
+                </div>
+                </div>
+
                 <br>
+                <div class="control-group error">
                 <label for='verify' class='label label-info'>Verify Password</label>
+                <div class="controls">
                 <input type='password' id='verify' name='verify'>
+                <span class="help-inline">{{ invalid_verify }}</span>
+                </div>
+                </div>
+
                 <br>
+                <div class="control-group error">
                 <label for='email' class='label label-info'>E-mail(Only if you want :) )</label>
+                <div class="controls">
                 <input type='text' id='email' name='email'>
+                <span class="help-inline">{{ invalid_email }}</span>
+                </div>
+                </div>
+
                 <br>
                 <button class="btn btn-primary" type='submit'>Submit</button>
         </fieldset>

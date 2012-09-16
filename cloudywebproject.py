@@ -95,6 +95,16 @@ class EntryPageHandler(BaseHandler):
             self.error(404)
 
 
+class DataValidator(object):
+
+    def validate_username(self, username):
+        return True 
+    def validate_email(self,email):
+        return True 
+    def validate_password(self, password):
+        return True
+  
+
 class SignupHandler(BaseHandler):
     def get(self):
         self.render('signup.html')
@@ -104,16 +114,34 @@ class SignupHandler(BaseHandler):
         self.password = self.request.get('password')
         self.verify = self.request.get('verify')
         self.email = self.request.get('email')
+       
+        invalid_data={} 
+        dv = DataValidator() 
+        
+        if not dv.validate_username(self.username):
+            invalid_data["invalid_username"]="Sorry, not a valid username."
+
+        if not dv.validate_password(self.password):
+            invalid_data["invalid_passowrd"]="Sorry, not a valid password."
+        elif self.password != self.verify:
+            invalid_data["invalid_verify"] = "Passwords do not match!"
+        
+        if not dv.validate_email(self.email):
+            invalid_data["invalid_email"] = "Sorry, not a valid e-mail address."
 
         user = User.get_by_name(self.username)
         if user:
-            self.render('signup.html')
+           invalid_data["invalid_username"]= "This username is already taken." 
+         
+        if len(invalid_data):
+           self.render("signup.html", **invalid_data) 
+        else:
+        
+            user = User.register(self.username, self.password, self.email)
+            user.put()
 
-        user = User.register(self.username, self.password, self.email)
-        user.put()
-
-        self.login(user)
-        self.redirect('/blog')
+            self.login(user)
+            self.redirect("/blog")
 
 
 class LoginHandler(BaseHandler):
