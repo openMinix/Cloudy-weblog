@@ -123,7 +123,13 @@ class LoginHandler(BaseHandler):
         self.render('login.html')
 
     def post(self):
-        pass
+        username = self.request.get("username")
+        password = self.request.get("password")
+        
+        user = User.login(username, password)
+        if user:
+           self.login(user)
+           self.redirect('/blog')
 
 
 class LogoutHandler(BaseHandler):
