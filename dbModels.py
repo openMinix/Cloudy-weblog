@@ -1,11 +1,10 @@
 from google.appengine.ext import db
-from common_utils import render_template
+import common_utils 
 from cloudywebproject import *
 
 
 def blog_key(name = 'default'):
     return db.Key.from_path('blogs', name)
-
 
 class BlogEntry(db.Model):
     title = db.StringProperty(required = True)
@@ -13,7 +12,7 @@ class BlogEntry(db.Model):
     date = db.DateTimeProperty(auto_now_add = True)
 
     def render(self):
-        return render_template('blogentry.html', entry = self )
+        return common_utils.render_template('blogentry.html', entry = self )
 
 
 def user_key(group = 'default'):

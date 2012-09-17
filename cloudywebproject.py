@@ -1,8 +1,8 @@
 import webapp2
 import jinja2
 
-from dbModels import * 
-from common_utils import render_template
+import dbModels  
+import common_utils 
 
 from google.appengine.ext import db
 
@@ -17,7 +17,7 @@ class BaseHandler(webapp2.RequestHandler):
         webapp2.RequestHandler.initialize(self, *args, **kwargs)
         uid = self.get_cookie('user_id')
         if uid:
-            self.user = User.get_by_id( int(uid), parent = user_key() )
+            self.user = dbModels.User.get_by_id( int(uid), parent = dbModels.user_key() )
         else:
             self.user = uid
 
@@ -55,7 +55,7 @@ class BlogHandler(BaseHandler):
     """Handles the blog page processing"""
 
     def get(self):
-        entries = BlogEntry.all().order('-date') 
+        entries = dbModels.BlogEntry.all().order('-date') 
         self.render('blog.html', entries = entries)
 
 
@@ -74,7 +74,7 @@ class NewEntryHandler(BaseHandler):
         content = self.request.get('content')
         
         if title and content:
-            be = BlogEntry(parent = blog_key(), title = title, content = content)
+            be = dbModels.BlogEntry(parent = dbModels.blog_key(), title = title, content = content)
             be.put()
             permalink = str( be.key().id() )
             self.redirect('/blog/' + permalink)
@@ -86,7 +86,7 @@ class EntryPageHandler(BaseHandler):
     """Handles the permalink pages processing"""
     
     def get(self, entry_id):
-        key = db.Key.from_path('BlogEntry', int(entry_id), parent=blog_key())
+        key = db.Key.from_path('BlogEntry', int(entry_id), parent=dbModels.blog_key())
         entry = db.get(key)
 
         if entry:
@@ -129,7 +129,7 @@ class SignupHandler(BaseHandler):
         if not dv.validate_email(self.email):
             invalid_data["invalid_email"] = "Sorry, not a valid e-mail address."
 
-        user = User.get_by_name(self.username)
+        user = dbModels.User.get_by_name(self.username)
         if user:
            invalid_data["invalid_username"]= "This username is already taken." 
          
@@ -137,7 +137,8 @@ class SignupHandler(BaseHandler):
            self.render("signup.html", **invalid_data) 
         else:
         
-            user = User.register(self.username, self.password, self.email)
+            user = dbModels.User.register(self.username,
+                                     self.password, self.email)
             user.put()
 
             self.login(user)
@@ -154,10 +155,13 @@ class LoginHandler(BaseHandler):
         username = self.request.get("username")
         password = self.request.get("password")
         
-        user = User.login(username, password)
+        user = dbModels.User.login(username, password)
         if user:
-           self.login(user)
-           self.redirect('/blog')
+            self.login(user)
+            self.redirect('/blog')
+        else:
+            invalid_data = "No such username or wrong password. Your guess!"
+            self.render("login.html", invalid_data = invalid_data)
 
 
 class LogoutHandler(BaseHandler):
