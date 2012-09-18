@@ -1,5 +1,5 @@
 import cloudywebproject 
-
+import re
 
 def render_template(template, **kwargs):
     """Renders the template with the given parameters """
@@ -19,7 +19,8 @@ class DataValidator(object):
 
     def validate_username(self, username):
         """ Validates username from user"""
-        return True
+        if username:
+            return True
 
     def validate_email(self,email):
         """ Validates email format """
@@ -27,5 +28,6 @@ class DataValidator(object):
 
     def validate_password(self, password):
         """ Validates password format """
-        return True
+        if password:
+            return True
 
