@@ -93,17 +93,7 @@ class EntryPageHandler(BaseHandler):
             self.render('permalink.html', entry = entry)
         else:
             self.error(404)
-
-
-class DataValidator(object):
-
-    def validate_username(self, username):
-        return True 
-    def validate_email(self,email):
-        return True 
-    def validate_password(self, password):
-        return True
-  
+ 
 
 class SignupHandler(BaseHandler):
     def get(self):
@@ -116,7 +106,7 @@ class SignupHandler(BaseHandler):
         self.email = self.request.get('email')
        
         invalid_data={} 
-        dv = DataValidator() 
+        dv = common_utils.DataValidator() 
         
         if not dv.validate_username(self.username):
             invalid_data["invalid_username"]="Sorry, not a valid username."
