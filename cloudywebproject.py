@@ -116,7 +116,7 @@ class SignupHandler(BaseHandler):
         elif self.password != self.verify:
             invalid_data["invalid_verify"] = "Passwords do not match!"
         
-        if not dv.validate_email(self.email):
+        if self.email and not dv.validate_email(self.email):
             invalid_data["invalid_email"] = "Sorry, not a valid e-mail address."
 
         user = dbModels.User.get_by_name(self.username)
