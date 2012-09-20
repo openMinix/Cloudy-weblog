@@ -18,3 +18,5 @@ inbound_services:
 libraries:
 - name: jinja2
   version: latest
+- name: pycrypto
+  version: "2.6" 

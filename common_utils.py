@@ -1,6 +1,7 @@
 import cloudywebproject 
 import re
 
+
 def render_template(template, **kwargs):
     """Renders the template with the given parameters """
     page_template = cloudywebproject.jinja_env.get_template(template)
