@@ -1,7 +1,7 @@
 from google.appengine.ext import db
 import common_utils 
 from cloudywebproject import *
-from Crypto.Hash import SHA256
+from passlib.hash import sha256_crypt
 
 def blog_key(name = 'default'):
     return db.Key.from_path('blogs', name)
@@ -29,9 +29,8 @@ class User(db.Model):
     
     @classmethod
     def register(cls, username, password, email = None):
-        h = SHA256.new()
-        h.update(password)
-        passwd_hash = h.hexdigest() 
+
+        passwd_hash = sha256_crypt.encrypt(password) 
 
         return User( parent = user_key(), username = username,
                     password = passwd_hash, email = email)
@@ -40,11 +39,7 @@ class User(db.Model):
     def login (cls, username, password):
         user = cls.get_by_name(username)
         
-        if user:
-            h= SHA256.new()
-            h.update(password)
-            
-            if h.hexdigest() == user.password:
+        if user and sha256_crypt.verify(password, user.password):
                 return user
 
     def render(self):
