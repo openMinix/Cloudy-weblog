@@ -55,28 +55,37 @@ class MainPageHandler(BaseHandler):
 class BlogHandler(BaseHandler):
     """Handles the blog page processing"""
 
-    def get(self):
-        entries = dbModels.BlogEntry.all().order('-date') 
-        self.render('blog.html', entries = entries)
+    def get(self, blog_id="default"):
+
+        b_key = dbModels.blog_key( blog_id)
+        blog = db.get(b_key)
+
+        entries = dbModels.BlogEntry.all().filter('blog = ', blog).order('-date')
+      #  entries = dbModels.BlogEntry.all().order('-date') 
+        self.render('blog.html', entries = entries, blog_id = blog_id)
 
 
 class NewEntryHandler(BaseHandler):
     """Handles the submit page processing"""
 
-    def get(self):
+    def get(self, blog_id):
         if self.user:
             self.render('newentry.html')
         else:
             self.redirect("/login")
 
-    def post(self):
+    def post(self,blog_id):
         
         title = self.request.get('title')
         content = self.request.get('content')
         
         if title and content:
-            be = dbModels.BlogEntry(parent = dbModels.blog_key(), title = title, content = content)
+            b_key = dbModels.blog_key( blog_id)
+            blog = db.get(b_key)
+
+            be = dbModels.BlogEntry(parent = dbModels.blog_key(), title = title, content = content, blog = blog)
             be.put()
+
             permalink = str( be.key().id() )
             self.redirect('/blog/' + permalink)
         else:
@@ -133,8 +142,14 @@ class SignupHandler(BaseHandler):
                                      self.password, self.email)
             user.put()
 
+            blog = dbModels.Blog( blog_owner = user , blog_title ='Def title',)
+            blog.put()
+            blog_page = str( blog.key().id() )
+                 
             self.login(user)
-            self.redirect("/blog")
+
+            self.redirect('/blog/page' + blog_page)
+            # self.redirect("/blog")
 
 
 class LoginHandler(BaseHandler):
@@ -167,7 +182,9 @@ class LogoutHandler(BaseHandler):
 
 app = webapp2.WSGIApplication( [('/', MainPageHandler),
                                 ('/blog/?',BlogHandler),
+                                ('/blog/page([0-9]+)/?', BlogHandler),
                                 ('/blog/newentry/?', NewEntryHandler),
+                                ('/blog/page([0-9]+)/newentry/?', NewEntryHandler),
                                 ('/blog/([0-9]+)/?', EntryPageHandler),
                                 ('/signup', SignupHandler),
                                 ('/login' , LoginHandler),
