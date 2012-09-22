@@ -7,7 +7,9 @@ from passlib.hash import sha256_crypt
 def Blog(db.Model):
     """Model for a blog"""   
 
-    blog_owner = db.StringProperty( required = True) 
+    blog_owner = db.ReferenceProperty(User, collection_name="blog",
+                                     required = True) 
+    blog_title = db.StringProperty(required = True)
     start_date = db.DateTimeProperty(auto_now_add = True)  
 
     def render:
@@ -45,6 +47,7 @@ class User(db.Model):
     username = db.StringProperty( required = True )
     password = db.StringProperty( required = True )
     email = db.StringProperty()
+    
 
     @classmethod
     def get_by_name(cls, username):
