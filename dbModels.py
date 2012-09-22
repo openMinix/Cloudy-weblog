@@ -60,6 +60,10 @@ class Blog(db.Model):
     
 def blog_key(name = 'default'):
     """Returns the key of the blog with the ID name"""
+
+    if name.isdigit():
+        name = int(name)
+
     return db.Key.from_path('Blog', name)
 
 

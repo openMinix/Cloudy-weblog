@@ -57,7 +57,7 @@ class BlogHandler(BaseHandler):
 
     def get(self, blog_id="default"):
 
-        b_key = dbModels.blog_key( blog_id)
+        b_key = dbModels.blog_key(blog_id)
         blog = db.get(b_key)
 
         entries = dbModels.BlogEntry.all().filter('blog = ', blog).order('-date')
@@ -165,7 +165,8 @@ class LoginHandler(BaseHandler):
         user = dbModels.User.login(username, password)
         if user:
             self.login(user)
-            self.redirect('/blog')
+            blog_page = str(user.blog.get().key().id()) 
+            self.redirect('/blog/page' + blog_page)
         else:
             invalid_data = "No such username or wrong password. Your guess!"
             self.render("login.html", invalid_data = invalid_data)
