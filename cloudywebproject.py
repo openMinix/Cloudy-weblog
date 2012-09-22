@@ -17,7 +17,8 @@ class BaseHandler(webapp2.RequestHandler):
         webapp2.RequestHandler.initialize(self, *args, **kwargs)
         uid = self.get_cookie('user_id')
         if uid:
-            self.user = dbModels.User.get_by_id( int(uid), parent = dbModels.user_key() )
+            self.user = dbModels.User.get_by_id( int(uid),
+                                           parent = dbModels.group_key() )
         else:
             self.user = uid
 
@@ -96,6 +97,7 @@ class EntryPageHandler(BaseHandler):
  
 
 class SignupHandler(BaseHandler):
+
     def get(self):
         self.render('signup.html')
     
