@@ -3,9 +3,11 @@
 
 {% block content %}
 
+{% if user %}
 <a class='btn btn-primary' href='/blog/page{{blog_id}}/newentry'>
     Submit a new post!
 </a>
+{% endif %}
 
     {% for entry in entries %}
         {{ entry.render() | safe }}

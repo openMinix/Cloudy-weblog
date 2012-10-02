@@ -24,7 +24,7 @@ class BaseHandler(webapp2.RequestHandler):
 
     def render(self, template, **kwargs):
         kwargs['user'] = self.user
-
+        kwargs['mainpage']= 'mainpage' 
         page_template = jinja_env.get_template(template)
         page_template = page_template.render(**kwargs)
         self.response.out.write(page_template)
@@ -61,7 +61,6 @@ class BlogHandler(BaseHandler):
         blog = db.get(b_key)
 
         entries = dbModels.BlogEntry.all().filter('blog = ', blog).order('-date')
-      #  entries = dbModels.BlogEntry.all().order('-date') 
         self.render('blog.html', entries = entries, blog_id = blog_id)
 
 
