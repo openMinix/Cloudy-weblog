@@ -24,7 +24,6 @@ class BaseHandler(webapp2.RequestHandler):
 
     def render(self, template, **kwargs):
         kwargs['user'] = self.user
-        kwargs['mainpage']= 'mainpage' 
         page_template = jinja_env.get_template(template)
         page_template = page_template.render(**kwargs)
         self.response.out.write(page_template)
@@ -86,7 +85,7 @@ class NewEntryHandler(BaseHandler):
             be.put()
 
             permalink = str( be.key().id() )
-            self.redirect('/blog/' + permalink)
+            self.redirect('/blog/page' + blog_id +'/' + permalink)
         else:
             self.render('newentry.html')
             
@@ -94,12 +93,12 @@ class NewEntryHandler(BaseHandler):
 class EntryPageHandler(BaseHandler):
     """Handles the permalink pages processing"""
     
-    def get(self, entry_id):
+    def get(self,blog_id, entry_id):
         key = db.Key.from_path('BlogEntry', int(entry_id), parent=dbModels.blog_key())
         entry = db.get(key)
 
         if entry:
-            self.render('permalink.html', entry = entry)
+            self.render('permalink.html', entry = entry, blog_id = blog_id)
         else:
             self.error(404)
  
@@ -185,7 +184,7 @@ app = webapp2.WSGIApplication( [('/', MainPageHandler),
                                 ('/blog/page([0-9]+)/?', BlogHandler),
                                 ('/blog/newentry/?', NewEntryHandler),
                                 ('/blog/page([0-9]+)/newentry/?', NewEntryHandler),
-                                ('/blog/([0-9]+)/?', EntryPageHandler),
+                                ('/blog/page([0-9]+)/([0-9]+)/?', EntryPageHandler),
                                 ('/signup', SignupHandler),
                                 ('/login' , LoginHandler),
                                 ('/logout' , LogoutHandler)
