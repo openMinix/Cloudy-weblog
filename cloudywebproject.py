@@ -50,7 +50,12 @@ class MainPageHandler(BaseHandler):
     def get(self):
         self.render('mainpage.html')
 
+class MainBlogHandler(BaseHandler):
 
+    def get(self):
+        entries = dbModels.BlogEntry.all().order('-date')
+        self.render('blog.html', entries = entries)
+     
 class BlogHandler(BaseHandler):
     """Handles the blog page processing"""
 
@@ -180,7 +185,7 @@ class LogoutHandler(BaseHandler):
 
 
 app = webapp2.WSGIApplication( [('/', MainPageHandler),
-                                ('/blog/?',BlogHandler),
+                                ('/blog/?',MainBlogHandler),
                                 ('/blog/page([0-9]+)/?', BlogHandler),
                                 ('/blog/newentry/?', NewEntryHandler),
                                 ('/blog/page([0-9]+)/newentry/?', NewEntryHandler),
