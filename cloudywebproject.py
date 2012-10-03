@@ -16,6 +16,7 @@ class BaseHandler(webapp2.RequestHandler):
     def initialize(self, *args, **kwargs):
         webapp2.RequestHandler.initialize(self, *args, **kwargs)
         uid = self.get_cookie('user_id')
+
         if uid:
             self.user = dbModels.User.get_by_id( int(uid),
                                            parent = dbModels.group_key() )
@@ -24,6 +25,8 @@ class BaseHandler(webapp2.RequestHandler):
 
     def render(self, template, **kwargs):
         kwargs['user'] = self.user
+
+        
         page_template = jinja_env.get_template(template)
         page_template = page_template.render(**kwargs)
         self.response.out.write(page_template)
@@ -51,11 +54,19 @@ class MainPageHandler(BaseHandler):
         self.render('mainpage.html')
 
 class MainBlogHandler(BaseHandler):
+    """ Handles blog main page """
 
     def get(self):
         entries = dbModels.BlogEntry.all().order('-date')
-        self.render('blog.html', entries = entries)
+
+        if self.user:
+           blog_id = str( self.user.blog[0].key().id() )
+        else:
+           blog_id = None
+
+        self.render('blog.html', entries = entries, blog_id = blog_id)
      
+
 class BlogHandler(BaseHandler):
     """Handles the blog page processing"""
 
