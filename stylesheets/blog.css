@@ -5785,4 +5785,5 @@ a.badge:hover {
  clear: both;
 }
 
-
+#blog_user {
+ text-align: right;

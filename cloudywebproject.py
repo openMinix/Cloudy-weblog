@@ -76,7 +76,7 @@ class BlogHandler(BaseHandler):
         blog = db.get(b_key)
 
         entries = dbModels.BlogEntry.all().filter('blog = ', blog).order('-date')
-        self.render('blog.html', entries = entries, blog_id = blog_id)
+        self.render('blog.html', entries = entries, blog_id = blog_id, blog = blog)
 
 
 class NewEntryHandler(BaseHandler):

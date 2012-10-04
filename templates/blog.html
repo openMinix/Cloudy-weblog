@@ -1,6 +1,14 @@
 {% extends "common.html" %}
 
 
+{% block blogid %}
+
+<div id="blog_user" class="class span4 label label-info">
+    of {{ blog.blog_owner.username }}.
+</div>
+
+{% endblock %}
+
 {% block content %}
 
 {% if user %}
@@ -8,7 +16,8 @@
     Submit a new post!
 </a>
 {% endif %}
-
+    
+    
     {% for entry in entries %}
         {{ entry.render() | safe }}
         <br/><br/>
