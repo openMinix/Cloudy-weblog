@@ -51,7 +51,7 @@ class MainPageHandler(BaseHandler):
     """ Handles the main page processing"""
 
     def get(self):
-        self.render("mainpage.html")
+        self.render("newmainpage.html")
 
 class MainBlogHandler(BaseHandler):
     """ Handles blog main page """
