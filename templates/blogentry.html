@@ -1,7 +1,9 @@
 <div class='blog-entry'>
     <div class'title'>
         <h2 style="text-align: center">
-        {{entry.title}}
+        <a href="/blog/page{{entry.blog.key().id()}}/{{entry.key().id()}}" >
+            {{entry.title}} 
+        </a>
         </h2>
     </div>
 
@@ -14,6 +16,8 @@
         Added at: {{entry.date}}
     </div>
     <div class='label label-success offset10'>
-       From {{entry.blog.blog_owner.username}}
+       From <a href="/blog/page{{entry.blog.key().id()}}">
+              {{entry.blog.blog_owner.username}} 
+            </a>
     </div>
 </div>    
