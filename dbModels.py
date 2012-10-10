@@ -74,7 +74,10 @@ class BlogEntry(db.Model):
     title = db.StringProperty(required = True)
     content = db.TextProperty(required = True)
     date = db.DateTimeProperty(auto_now_add = True)
+    votes = db.IntegerProperty( default = 0 )
 
     def render(self):
         return common_utils.render_template('blogentry.html', entry = self )
+    
+    
  
