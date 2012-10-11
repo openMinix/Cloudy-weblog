@@ -9,6 +9,8 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
+- url: /js
+  static_dir: js
 - url: /.*
   script: cloudywebproject.app
 

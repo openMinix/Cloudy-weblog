@@ -193,6 +193,29 @@ class LogoutHandler(BaseHandler):
         self.logout()
         self.redirect('/blog')
 
+class VoteHandler(BaseHandler):
+   """Handles the blogEntry posts"""
+
+   def get(self):
+       votes = self.request.get("votes")
+       sign = self.request.get("sign")
+       entry_id = self.request.get("entry")
+
+       if sign == "plus":
+           votes =int(votes) + 1
+       elif sign == "minus":
+           votes = int(votes) - 1
+       else:
+           pass
+
+       blog_entry = dbModels.BlogEntry.get_by_id( int(entry_id),
+                                           parent = dbModels.blog_key() )
+      
+       blog_entry.votes = votes;
+       blog_entry.put(); 
+
+       self.response.out.write( str(votes) )
+
 
 
 app = webapp2.WSGIApplication( [('/', MainPageHandler),
@@ -203,7 +226,8 @@ app = webapp2.WSGIApplication( [('/', MainPageHandler),
                                 ('/blog/page([0-9]+)/([0-9]+)/?', EntryPageHandler),
                                 ('/signup', SignupHandler),
                                 ('/login' , LoginHandler),
-                                ('/logout' , LogoutHandler)
+                                ('/logout' , LogoutHandler),
+                                ('/blog/votes.*', VoteHandler)
                               ],
                               debug=True)
 
