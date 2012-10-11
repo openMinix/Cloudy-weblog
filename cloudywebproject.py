@@ -57,7 +57,7 @@ class MainBlogHandler(BaseHandler):
     """ Handles blog main page """
 
     def get(self):
-        entries = dbModels.BlogEntry.all().order('-date')
+        entries = dbModels.BlogEntry.all().order('-votes').order('-date')
 
         if self.user:
            blog_id = str( self.user.blog[0].key().id() )
@@ -75,8 +75,10 @@ class BlogHandler(BaseHandler):
         b_key = dbModels.blog_key(blog_id)
         blog = db.get(b_key)
 
-        entries = dbModels.BlogEntry.all().filter('blog = ', blog).order('-date')
-        self.render('blog.html', entries = entries, blog_id = blog_id, blog = blog)
+        entries =  ( dbModels.BlogEntry.all().filter('blog = ', blog).  
+            order('-votes').order('-date') )
+        self.render('blog.html', entries = entries, blog_id = blog_id,
+            blog = blog)
 
 
 class NewEntryHandler(BaseHandler):
@@ -97,7 +99,8 @@ class NewEntryHandler(BaseHandler):
             b_key = dbModels.blog_key( blog_id)
             blog = db.get(b_key)
 
-            be = dbModels.BlogEntry(parent = dbModels.blog_key(), title = title, content = content, blog = blog)
+            be = dbModels.BlogEntry(parent = dbModels.blog_key(),
+                title = title, content = content, blog = blog)
             be.put()
 
             permalink = str( be.key().id() )
