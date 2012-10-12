@@ -25,7 +25,7 @@
         </pre>
     </div>
     <div class='label label-info offset10'>
-        Added at: {{entry.date}}
+        Added at: {{entry.date.strftime("%b %d, %Y %H: %M")}}
     </div>
     <div class='label label-success offset10'>
        From <a href="/blog/page{{entry.blog.key().id()}}">
