@@ -1,4 +1,4 @@
-<article id="{{entry.key().id()}}" class="entry-article">
+<article id="{{entry.key().id()}}" class="entry-article row-fluid">
 
 <div class="democracy">
     <div class="btn-vote_up">
@@ -24,10 +24,10 @@
         {{entry.content}}
         </pre>
     </div>
-    <div class='label label-info offset10'>
-        Added at: {{entry.date.strftime("%b %d, %Y %H: %M")}}
+    <div class='label label-info offset9'>
+        <p>Added at: {{entry.date.strftime("%b %d, %Y %H: %M")}}</p>
     </div>
-    <div class='label label-success offset10'>
+    <div class='label label-success offset9'>
        From <a href="/blog/page{{entry.blog.key().id()}}">
               {{entry.blog.blog_owner.username}} 
             </a>
