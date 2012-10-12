@@ -5777,7 +5777,7 @@ a.badge:hover {
 
 
 #footer {
- position:fixed;
+ position:relative;
  bottom:0;
  width:98%;
  float:left;
@@ -5787,3 +5787,41 @@ a.badge:hover {
 
 #blog_user {
  text-align: right;
+}
+
+
+.democracy strong {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 40px;
+  color: #999;
+}
+.democracy div{
+  display: block;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+}
+
+.democracy .btn-vote_up {
+  border-bottom-color: #CC3399;
+}
+
+.democracy .btn-vote_up:hover {
+  border-bottom-color: #333;
+}
+.democracy .btn-vote_down {
+  border-top-color: #CC3399;
+}
+.democracy .btn-vote_down:hover {
+  border-top-color: #333;
+}
+
+.upvoted .btn-vote_up {
+  border-bottom-color: #66FF00;
+}
+
+.downvoted .btn-vote_down {
+  border-top-color: #660000;
+}
+
