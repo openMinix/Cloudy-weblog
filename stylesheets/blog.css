@@ -5777,16 +5777,36 @@ a.badge:hover {
 
 
 #footer {
- position:relative;
- bottom:0;
- width:98%;
- float:left;
- z-index:999999;
- clear: both;
+  position:relative;
+  bottom:0;
+  width:98%;
+  float:left;
+  z-index:999999;
+  clear: both;
 }
 
 #blog_user {
- text-align: right;
+  text-align: right;
+}
+
+.entry-article {
+ width: 100%;
+ display: block;
+}
+
+.blog-entry {
+ width: 80%;
+ display: block;
+ position:relative;
+ left:7em;
+}
+
+.democracy {
+  width:20%;
+  display: block;
+  position:relative;
+  top: 10em;
+  left: 4em;
 }
 
 
@@ -5794,7 +5814,8 @@ a.badge:hover {
   font-weight: bold;
   font-size: 24px;
   line-height: 40px;
-  color: #999;
+  
+  color: #0099CC;
 }
 .democracy div{
   display: block;
