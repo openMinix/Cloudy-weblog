@@ -18,6 +18,7 @@ class User(db.Model):
     username = db.StringProperty( required = True )
     password = db.StringProperty( required = True )
     email = db.StringProperty()
+    posts_voted = db.StringListProperty( default = "" )
     
 
     @classmethod
@@ -34,12 +35,29 @@ class User(db.Model):
                     password = passwd_hash, email = email)
 
     @classmethod
-    def login (cls, username, password):
+    def login(cls, username, password):
         """Verifies user credentials"""
         user = cls.get_by_name(username)
         
         if user and sha256_crypt.verify(password, user.password):
                 return user
+
+    
+    def vote(self, entry_id):
+        """Mark the blog entry as voted by this user"""
+
+        self.posts_voted.append( str(entry_id) )
+        self.put()
+        
+    def has_voted(self, entry_id):
+        """Verifies if the user has voted the blog
+        with the id entry_id"""
+
+        if str(entry_id) in self.posts_voted:
+            return True
+        else:
+            return False
+            
 
     def render(self):
         pass

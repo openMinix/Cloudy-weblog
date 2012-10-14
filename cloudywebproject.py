@@ -204,6 +204,12 @@ class VoteHandler(BaseHandler):
        sign = self.request.get("sign")
        entry_id = self.request.get("entry")
 
+       if self.user.has_voted(entry_id):
+           self.response.out.write( str(votes) )
+           return
+       else:
+           self.user.vote(entry_id)
+
        if sign == "plus":
            votes =int(votes) + 1
        elif sign == "minus":
