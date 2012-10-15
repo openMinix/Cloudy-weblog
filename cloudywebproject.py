@@ -24,6 +24,7 @@ class BaseHandler(webapp2.RequestHandler):
             self.user = uid
 
     def render(self, template, **kwargs):
+        """Writes to the response the formatted webpage"""
         kwargs['user'] = self.user
 
         
@@ -32,17 +33,23 @@ class BaseHandler(webapp2.RequestHandler):
         self.response.out.write(page_template)
     
     def set_cookie(self, name, value):
+        """Sets a cookie with the name 'name' and the value 'value'"""
+
         self.response.headers.add_header('Set-Cookie',
                                          '%s=%s; Path=/' % (name, value)
                                          )
     def get_cookie(self, name):
+        """Gets the cookie with the name 'name'""" 
+
         cookie_value = self.request.cookies.get(name)
         return cookie_value
 
     def login(self, username):
+        """Sets the 'user_id' cookie"""
         self.set_cookie('user_id', str(username.key().id()))
 
     def logout(self):
+        """Removes the 'user_id" cookie"""
         self.set_cookie('user_id',"")
 
 
@@ -197,14 +204,14 @@ class LogoutHandler(BaseHandler):
         self.redirect('/blog')
 
 class VoteHandler(BaseHandler):
-   """Handles the blogEntry posts"""
+   """Handles the blogEntry posts voting"""
 
    def get(self):
        votes = self.request.get("votes")
        sign = self.request.get("sign")
        entry_id = self.request.get("entry")
 
-       if self.user.has_voted(entry_id):
+       if not self.user or self.user.has_voted(entry_id):
            self.response.out.write( str(votes) )
            return
        else:
