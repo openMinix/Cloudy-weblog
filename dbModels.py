@@ -18,12 +18,14 @@ class User(db.Model):
     username = db.StringProperty( required = True )
     password = db.StringProperty( required = True )
     email = db.StringProperty()
-    posts_voted = db.StringListProperty( default = "" )
+    #posts_voted = db.StringListProperty( default = "" )
+    
     
 
     @classmethod
     def get_by_name(cls, username):
         """Returns the instance of User that matches the username"""
+
         return cls.all().filter('username = ', username).get()
     
     @classmethod
@@ -37,26 +39,29 @@ class User(db.Model):
     @classmethod
     def login(cls, username, password):
         """Verifies user credentials"""
+
         user = cls.get_by_name(username)
         
         if user and sha256_crypt.verify(password, user.password):
-                return user
+            return user
 
-    
-    def vote(self, entry_id):
+    def vote(self, blog_entry, vote_kind):
         """Mark the blog entry as voted by this user"""
 
-        self.posts_voted.append( str(entry_id) )
-        self.put()
-        
-    def has_voted(self, entry_id):
-        """Verifies if the user has voted the blog
-        with the id entry_id"""
+        vote = BlogEntryVote( blog_entry = blog_entry,
+                      user_voted = self, vote_kind = vote_kind)
+        vote.put()
 
-        if str(entry_id) in self.posts_voted:
-            return True
-        else:
-            return False
+        
+    def has_voted(self, blog_entry):
+        """Verifies if the user has voted the blog entry
+        blog_entry"""
+         
+        for vote in self.blogentries_votes:
+            if blog_entry.key().id() == vote.blog_entry.key().id():
+                return True 
+
+        return False 
             
 
     def render(self):
@@ -98,4 +103,11 @@ class BlogEntry(db.Model):
         return common_utils.render_template('blogentry.html', entry = self )
     
     
- 
+class BlogEntryVote(db.Model):
+    """ Model for a blog entry vote"""
+
+    blog_entry = db.ReferenceProperty(BlogEntry, collection_name="blogentries_votes")
+    user_voted = db.ReferenceProperty(User, collection_name="blogentries_votes")
+    vote_kind = db.StringProperty()
+   
+    

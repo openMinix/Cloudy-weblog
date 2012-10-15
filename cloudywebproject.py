@@ -173,7 +173,6 @@ class SignupHandler(BaseHandler):
             self.login(user)
 
             self.redirect('/blog/page' + blog_page)
-            # self.redirect("/blog")
 
 
 class LoginHandler(BaseHandler):
@@ -211,11 +210,15 @@ class VoteHandler(BaseHandler):
        sign = self.request.get("sign")
        entry_id = self.request.get("entry")
 
-       if not self.user or self.user.has_voted(entry_id):
+       blog_entry = dbModels.BlogEntry.get_by_id( int(entry_id),
+                                           parent = dbModels.blog_key() )
+
+       if (not self.user) or self.user.has_voted(blog_entry):
            self.response.out.write( str(votes) )
            return
        else:
-           self.user.vote(entry_id)
+           self.user.vote(blog_entry, sign)
+           
 
        if sign == "plus":
            votes =int(votes) + 1
@@ -224,9 +227,6 @@ class VoteHandler(BaseHandler):
        else:
            pass
 
-       blog_entry = dbModels.BlogEntry.get_by_id( int(entry_id),
-                                           parent = dbModels.blog_key() )
-      
        blog_entry.votes = votes;
        blog_entry.put(); 
 
