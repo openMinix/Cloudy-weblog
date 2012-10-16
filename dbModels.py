@@ -18,10 +18,8 @@ class User(db.Model):
     username = db.StringProperty( required = True )
     password = db.StringProperty( required = True )
     email = db.StringProperty()
-    #posts_voted = db.StringListProperty( default = "" )
     
     
-
     @classmethod
     def get_by_name(cls, username):
         """Returns the instance of User that matches the username"""
@@ -63,6 +61,66 @@ class User(db.Model):
 
         return False 
             
+
+
+    def is_unvoting(self, blog_entry, sign):
+        """Checks if the user wants to unvote"""
+
+        vote = self.blogentries_votes. \
+            filter('blog_entry =', blog_entry). \
+            filter('user_voted =', self)[0]
+        
+        if sign == vote.vote_kind:
+            return True
+        else:
+            return False
+    
+    def unvote(self, blog_entry):
+        """Unvotes a voted post"""
+         
+        vote = self.blogentries_votes. \
+            filter('blog_entry =', blog_entry). \
+            filter('user_voted =', self)[0]
+        
+        if vote.vote_kind == "plus":
+            blog_entry.votes -= 1
+        elif vote.vote_kind == "minus":
+            blog_entry.votes += 1
+        else:
+            pass
+        
+        blog_entry.put()
+        vote.delete()  
+
+    def is_changing_vote(self, blog_entry, sign):
+        """Checks if user wants to change his vote"""
+        vote = self.blogentries_votes. \
+            filter('blog_entry =', blog_entry). \
+            filter('user_voted =', self)[0]
+        
+        if sign != vote.vote_kind:
+            return True
+        else:
+            return False
+
+    def change_vote(self, blog_entry):
+        """Unvotes a voted post"""
+         
+        vote = self.blogentries_votes. \
+            filter('blog_entry =', blog_entry). \
+            filter('user_voted =', self)[0]
+        
+        if vote.vote_kind == "plus":
+            blog_entry.votes -= 2
+            vote.vote_kind = "minus"
+        elif vote.vote_kind == "minus":
+            blog_entry.votes += 2
+            vote.vote_kind = "plus"
+        else:
+            pass
+       
+        vote.put() 
+        blog_entry.put()
 
     def render(self):
         pass

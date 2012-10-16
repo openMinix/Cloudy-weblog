@@ -84,6 +84,7 @@ class BlogHandler(BaseHandler):
 
         entries =  ( dbModels.BlogEntry.all().filter('blog = ', blog).  
             order('-votes').order('-date') )
+
         self.render('blog.html', entries = entries, blog_id = blog_id,
             blog = blog)
 
@@ -202,6 +203,7 @@ class LogoutHandler(BaseHandler):
         self.logout()
         self.redirect('/blog')
 
+
 class VoteHandler(BaseHandler):
    """Handles the blogEntry posts voting"""
 
@@ -214,7 +216,15 @@ class VoteHandler(BaseHandler):
                                            parent = dbModels.blog_key() )
 
        if (not self.user) or self.user.has_voted(blog_entry):
-           self.response.out.write( str(votes) )
+           if self.user.is_unvoting(blog_entry, sign):
+               self.user.unvote(blog_entry)
+               self.response.out.write( str(blog_entry.votes))
+           elif self.user.is_changing_vote(blog_entry, sign):
+               self.user.change_vote(blog_entry)
+               self.response.out.write( str(blog_entry.votes))
+           else:
+               self.response.out.write( str(votes) )
+
            return
        else:
            self.user.vote(blog_entry, sign)
